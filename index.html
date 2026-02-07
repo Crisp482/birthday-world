@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Little World 💚</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', sans-serif;
+  background: linear-gradient(#87ceeb, #cce7ff);
+  text-align: center;
+}
+
+h1 {
+  margin-top: 40px;
+}
+
+.world {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.item {
+  width: 150px;
+  height: 150px;
+  background: #7cb342;
+  border: 5px solid #4e342e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.1);
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  color: white;
+}
+
+.popup-content {
+  background: #222;
+  margin: 10% auto;
+  padding: 30px;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 12px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Welcome to Our World 🎮💚</h1>
+<p>Click each item to unlock something special</p>
+
+<div class="world">
+  <div class="item" onclick="openGift('music')">🎧</div>
+  <div class="item" onclick="openGift('memories')">📸</div>
+  <div class="item" onclick="openGift('letter')">💌</div>
+</div>
+
+<div id="popup" class="popup">
+  <div class="popup-content" id="popupContent"></div>
+</div>
+
+<script>
+function openGift(type) {
+  let content = "";
+
+  if (type === "music") {
+    content = "<h2>Our Song 🎵</h2><p>Add your song link here.</p>";
+  }
+
+  if (type === "memories") {
+    content = "<h2>Our Memories 📸</h2><p>Add photos or memory notes here.</p>";
+  }
+
+  if (type === "letter") {
+    content = "<h2>For You 💚</h2><p>Add your letter here.</p>";
+  }
+
+  content += '<br><button onclick="closeGift()">Close</button>';
+  document.getElementById("popupContent").innerHTML = content;
+  document.getElementById("popup").style.display = "block";
+}
+
+function closeGift() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
