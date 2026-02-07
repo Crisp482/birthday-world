@@ -1,5 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our World 💚</title>
+
 <style>
-/* ===== PAGE FLIP ANIMATION ===== */
+/* ===== GLOBAL ===== */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(#7ec850, #b3e5fc);
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* ===== WORLD ITEMS ===== */
+.world {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 80px 20px;
+  flex-wrap: wrap;
+}
+
+.item {
+  width: 160px;
+  height: 160px;
+  background: repeating-linear-gradient(
+    45deg,
+    #7cb342,
+    #7cb342 10px,
+    #689f38 10px,
+    #689f38 20px
+  );
+  border: 6px solid #4e342e;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* ===== POPUP ===== */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  z-index: 10;
+}
+
+.popup-content {
+  background: #1e1e1e;
+  margin: 8% auto;
+  padding: 30px;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 16px;
+}
+
+.popup img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #4caf50;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+}
+button:hover {
+  background: #66bb6a;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin: 40px 0;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart {
+  position: fixed;
+  bottom: 0;
+  font-size: 20px;
+  animation: rise 5s linear infinite;
+  color: pink;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* ===== BOOK PAGE STYLE ===== */
 .book-page {
   display: none;
   background: #2b2b2b;
@@ -34,18 +144,79 @@
   cursor: pointer;
   border-radius: 8px;
 }
+
+/* ===== FADE-IN MAIN CONTENT ===== */
+#mainContent {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+#mainContent.visible {
+  display: block;
+  opacity: 1;
+}
+
+/* ===== PASSCODE SCREEN ===== */
+#passcodeScreen {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+#passcodeScreen input {
+  padding: 10px;
+  font-size: 1.2em;
+  margin: 10px;
+}
+#passcodeScreen button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 </style>
+</head>
+<body>
 
 <!-- ===== PASSCODE SCREEN ===== -->
-<div id="passcodeScreen" style="position:fixed; inset:0; background:#111; color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:1000;">
+<div id="passcodeScreen">
   <h2>Enter the passcode to unlock your world</h2>
-  <input id="passcodeInput" type="text" placeholder="Hint: First kiss" style="padding:10px; font-size:1.2em; margin:10px;">
+  <input id="passcodeInput" type="text" placeholder="Hint: First kiss">
   <button onclick="checkPasscode()">Unlock</button>
   <p id="passcodeMessage" style="color:red;"></p>
 </div>
 
+<!-- ===== MAIN CONTENT ===== -->
+<div id="mainContent">
+  <h1>Welcome to Our World 🎮💚</h1>
+  <p>Explore carefully. Every block holds a memory.</p>
+
+  <div class="world">
+    <div class="item" onclick="openGift('music')">🎧</div>
+    <div class="item" onclick="openGift('memories')">📸</div>
+    <div class="item" onclick="openGift('letter')">💌</div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content" id="popupContent"></div>
+  </div>
+
+  <div class="footer">
+    Achievement Unlocked: Best Boyfriend Ever 🏆
+  </div>
+</div>
+
+<!-- BACKGROUND MUSIC (OPTIONAL) -->
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-// ===== FLOATING HEARTS =====
+/* ===== FLOATING HEARTS ===== */
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
@@ -55,17 +226,18 @@ setInterval(() => {
   setTimeout(() => heart.remove(), 5000);
 }, 800);
 
-// ===== PASSCODE FEATURE =====
+/* ===== PASSCODE FUNCTION ===== */
 function checkPasscode() {
   const code = document.getElementById("passcodeInput").value;
   if(code === "0727") {
     document.getElementById("passcodeScreen").style.display = "none";
+    document.getElementById("mainContent").classList.add("visible");
   } else {
     document.getElementById("passcodeMessage").innerText = "Incorrect passcode!";
   }
 }
 
-// ===== CREATE BOOK FUNCTION WITH FLIP =====
+/* ===== CREATE BOOK ===== */
 function createBook(pages) {
   let container = document.createElement("div");
   container.className = "book-container";
@@ -101,10 +273,9 @@ function createBook(pages) {
   return container;
 }
 
-// ===== MODIFY openGift FUNCTION TO USE BOOK PAGES =====
-const originalOpenGift = openGift;
-openGift = function(type) {
-  let content = "";
+/* ===== OPEN GIFTS WITH BOOK PAGES ===== */
+function openGift(type) {
+  let content = [];
   if(type==="music") {
     content = [
       `<h2>Our Song 🎵</h2>
@@ -131,11 +302,17 @@ openGift = function(type) {
     ];
   }
 
-  let popup = document.getElementById("popup");
-  let popupContent = document.getElementById("popupContent");
+  const popup = document.getElementById("popup");
+  const popupContent = document.getElementById("popupContent");
   popupContent.innerHTML = "";
   popupContent.appendChild(createBook(content));
   popupContent.innerHTML += '<br><button onclick="closeGift()">Close</button>';
   popup.style.display = "block";
-};
+}
+
+function closeGift() {
+  document.getElementById("popup").style.display = "none";
+}
 </script>
+</body>
+</html>
