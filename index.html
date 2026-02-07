@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Our World 💚</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 /* ===== GLOBAL ===== */
 body {
@@ -14,18 +16,59 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== WORLD ITEMS ===== */
+/* ===== PASSCODE SCREEN ===== */
+#passcodeScreen {
+  position: fixed;
+  inset: 0;
+  background: #1e1e1e;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#passcodeScreen input {
+  padding: 10px;
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+#passcodeScreen button {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+/* ===== MAIN CONTENT ===== */
+#mainContent {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+#mainContent.visible {
+  display: block;
+  opacity: 1;
+}
+
+h1 {
+  margin-top: 20px;
+  font-size: 2em;
+}
+
+p {
+  font-size: 1.1em;
+}
+
 .world {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin: 80px 20px;
+  gap: 20px;
+  margin: 40px 10px;
   flex-wrap: wrap;
 }
 
 .item {
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   background: repeating-linear-gradient(
     45deg,
     #7cb342,
@@ -39,7 +82,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 60px;
+  font-size: 50px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -48,23 +91,24 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-/* ===== POPUP ===== */
 .popup {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75);
-  color: white;
+  background: rgba(0,0,0,0.85);
   z-index: 10;
 }
 
 .popup-content {
   background: #1e1e1e;
-  margin: 8% auto;
-  padding: 30px;
+  margin: 5% auto;
+  padding: 20px;
   width: 90%;
-  max-width: 420px;
+  max-width: 400px;
   border-radius: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: left;
 }
 
 .popup img {
@@ -73,9 +117,8 @@ body {
   margin-bottom: 10px;
 }
 
-/* ===== BUTTONS ===== */
 button {
-  padding: 10px 18px;
+  padding: 8px 16px;
   border: none;
   border-radius: 8px;
   background: #4caf50;
@@ -83,16 +126,21 @@ button {
   font-size: 1em;
   cursor: pointer;
 }
-button:hover {
-  background: #66bb6a;
-}
 
-/* ===== FOOTER ===== */
+button:hover { background: #66bb6a; }
+
 .footer {
-  margin: 40px 0;
+  margin: 20px 0;
   font-size: 0.9em;
   opacity: 0.8;
 }
+
+/* ===== TYPEWRITER ===== */
+.typewriter span {
+  border-right: 2px solid #00ff88;
+  animation: blink 1s infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
 
 /* ===== FLOATING HEARTS ===== */
 .heart {
@@ -102,118 +150,76 @@ button:hover {
   animation: rise 5s linear infinite;
   color: pink;
 }
-
-/* ===== ANIMATIONS ===== */
 @keyframes rise {
   0% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(-100vh); opacity: 0; }
 }
 
-/* ===== BOOK PAGE STYLE ===== */
-.book-page {
-  display: none;
+/* ===== BOOK ===== */
+.book {
   background: #2b2b2b;
+  padding: 15px;
   border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-  text-align: left;
   line-height: 1.5;
-  transform-origin: left;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  opacity: 0;
 }
-.book-page.active {
-  display: block;
-  opacity: 1;
-  transform: rotateY(0deg);
-}
-.book-page.next {
-  transform: rotateY(-180deg);
-}
-.book-controls {
+.page-controls {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-}
-.book-controls button {
-  background: #4caf50;
-  color: #fff;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 8px;
+  margin-top: 15px;
 }
 
-/* FADE-IN MAIN CONTENT */
-#mainContent {
-  display: none;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
+/* ===== ACHIEVEMENT ===== */
+.achievement {
+  background: #0f5132;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 15px;
+  text-align: center;
+  animation: pop 1s ease;
 }
-#mainContent.visible {
-  display: block; /* ADD THIS LINE */
-  opacity: 1;
-}
+@keyframes pop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity:1; } }
 
-/* ===== PASSCODE SCREEN ===== */
-#passcodeScreen {
-  position: fixed;
-  inset: 0;
-  background: #111;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-#passcodeScreen input {
-  padding: 10px;
-  font-size: 1.2em;
-  margin: 10px;
-}
-#passcodeScreen button {
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
+@media screen and (max-width: 480px){
+  .item { width: 90px; height: 90px; font-size: 35px; }
+  .world { gap: 10px; }
+  h1 { font-size: 1.5em; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== PASSCODE SCREEN ===== -->
+<!-- PASSCODE SCREEN -->
 <div id="passcodeScreen">
-  <h2>Enter the passcode to unlock your world</h2>
-  <input id="passcodeInput" type="text" placeholder="Hint: First kiss">
+  <h1>Enter Passcode 🔒</h1>
+  <p>Hint: First kiss</p>
+  <input type="text" id="passcodeInput" placeholder="Enter code">
   <button onclick="checkPasscode()">Unlock</button>
   <p id="passcodeMessage" style="color:red;"></p>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
+<!-- MAIN WORLD CONTENT -->
 <div id="mainContent">
-  <h1>Welcome to Our World 🎮💚</h1>
-  <p>Explore carefully. Every block holds a memory.</p>
+<h1>Welcome to Our World 🎮💚</h1>
+<p>Explore carefully. Every block holds a memory.</p>
 
-  <div class="world">
-    <div class="item" onclick="openGift('music')">🎧</div>
-    <div class="item" onclick="openGift('memories')">📸</div>
-    <div class="item" onclick="openGift('letter')">💌</div>
-  </div>
-
-  <div class="popup" id="popup">
-    <div class="popup-content" id="popupContent"></div>
-  </div>
-
-  <div class="footer">
-    Achievement Unlocked: Best Boyfriend Ever 🏆
-  </div>
+<div class="world">
+  <div class="item" onclick="openGift('music')">🎧</div>
+  <div class="item" onclick="openGift('memories')">📸</div>
+  <div class="item" onclick="openGift('letter')">💌</div>
 </div>
 
-<!-- BACKGROUND MUSIC (OPTIONAL) -->
+<div class="popup" id="popup">
+  <div class="popup-content" id="popupContent"></div>
+</div>
+
+<div class="footer">
+  Achievement Unlocked: Best Boyfriend Ever 🏆
+</div>
+
 <audio autoplay loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
+</div>
 
 <script>
 /* ===== FLOATING HEARTS ===== */
@@ -221,100 +227,137 @@ setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerHTML = "💖";
-  heart.style.left = Math.random()*100 + "vw";
+  heart.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 5000);
 }, 800);
 
-/* ===== PASSCODE FUNCTION ===== */
-function checkPasscode() {
+/* ===== TYPEWRITER ===== */
+function typeWriter(text, element, speed = 20){
+  let i = 0;
+  element.innerHTML = "";
+  const span = document.createElement("span");
+  element.appendChild(span);
+  function typing(){
+    if(i < text.length){
+      span.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
+  }
+  typing();
+}
+
+/* ===== LETTER PAGES ===== */
+let letterPages = [
+`Happy Birthday, my love.
+
+I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me. But here we are. And honestly, it felt right, because loving you feels right.`,
+
+`I wanted to give you something, even though it isn't as much as you have given me, i hope you liked it. I wanted to give you a place where you could slow down for a moment and feel what I feel every time I think about you. Every block, every click, every detail here was made with you in mind.`,
+
+`Seven months isn’t long by the calendar, but it’s been long enough for you to become my favorite person to talk to, my comfort, and my happiness.`,
+
+`I love the little moments we share — the conversations, the jokes, the quiet times. Those are the moments that stay with me the most.`,
+
+`This world you’re exploring is really just a reflection of how I see us. Still building. Still learning. Still discovering new things. And I love that. I love that we’re growing together.`,
+
+`Happy Birthday, my favorite player, my safe place, my person.
+
+Always yours,
+Your babyyyyyy 💚🎮`
+];
+
+let currentPage = 0;
+
+/* ===== OPEN GIFTS ===== */
+function openGift(type){
+  let content = "";
+
+  if(type==="music"){
+    content = `<div class="book"><h2>Our Song 🎵</h2>
+      <iframe width="100%" height="215" src="https://www.youtube.com/embed/dn5rSbHGsHY" frameborder="0" allowfullscreen></iframe>
+      <div class="page-controls">
+        <button onclick="prevPageGift()">⬅</button>
+        <button onclick="nextPageGift()">➡</button>
+      </div>
+    </div><button onclick="closeGift()">Close</button>`;
+    currentPage=0; // for single page, just in case
+  }
+
+  if(type==="memories"){
+    const memories = [
+      {img:"https://raw.githubusercontent.com/Crisp482/birthday-world/a09022390802d42b9eb348b917210a02f3c3c0bd/1.jpeg", text:"The first time you came by me, I was overjoyed you came, gave me hella butterflies."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true", text:"One of my favorite little moments, it is so adorableeeee."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true", text:"I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true", text:"I loved this night with you."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true", text:"Our late night talks really are what i cherish most about us."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true", text:"Your tendency to piss me off never grow old and i love it."},
+      {img:"https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true", text:"Outing number 2, def needed more pictures...initmate ones i mean hehehe."}
+    ];
+    letterPages = memories.map(m=>`<img src="${m.img}" alt=""><p>${m.text}</p>`);
+    currentPage=0;
+    content = `<div class="book"><div id="letterText" class="typewriter"></div>
+      <div class="page-controls">
+        <button onclick="prevPage()">⬅</button>
+        <button onclick="nextPage()">➡</button>
+      </div>
+    </div><button onclick="closeGift()">Close</button>`;
+  }
+
+  if(type==="letter"){
+    currentPage=0;
+    content = `<h2>For You 💚</h2>
+      <div class="book"><div id="letterText" class="typewriter"></div>
+      <div class="page-controls">
+        <button onclick="prevPage()">⬅</button>
+        <button onclick="nextPage()">➡</button>
+      </div></div>
+      <div id="achievement"></div>
+      <button onclick="closeGift()">Close</button>`;
+  }
+
+  document.getElementById("popupContent").innerHTML = content;
+  document.getElementById("popup").style.display="block";
+
+  showPage();
+}
+
+/* ===== PAGE FLIP ===== */
+function showPage(){
+  const el = document.getElementById("letterText");
+  if(el) typeWriter(letterPages[currentPage], el);
+
+  if(currentPage === letterPages.length-1){
+    const ach = document.getElementById("achievement");
+    if(ach) ach.innerHTML=`<div class="achievement">🏆 Achievement Unlocked<br><strong>Loved Beyond Measure</strong></div>`;
+  }
+}
+
+function nextPage(){
+  if(currentPage<letterPages.length-1){ currentPage++; showPage(); }
+}
+function prevPage(){
+  if(currentPage>0){ currentPage--; showPage(); }
+}
+
+function closeGift(){
+  document.getElementById("popup").style.display="none";
+}
+
+/* ===== PASSCODE ===== */
+function checkPasscode(){
   const code = document.getElementById("passcodeInput").value;
-  if(code === "0727") {
-    document.getElementById("passcodeScreen").style.display = "none";
+  if(code==="0727"){
+    document.getElementById("passcodeScreen").style.display="none";
     const main = document.getElementById("mainContent");
-    main.style.display = "block";  // ensure display is block
-    setTimeout(() => main.classList.add("visible"), 10); // trigger fade-in
+    main.style.display="block";
+    setTimeout(()=>main.classList.add("visible"),10);
   } else {
-    document.getElementById("passcodeMessage").innerText = "Incorrect passcode!";
+    document.getElementById("passcodeMessage").innerText="Incorrect passcode!";
   }
-}
-
-/* ===== CREATE BOOK ===== */
-function createBook(pages) {
-  let container = document.createElement("div");
-  container.className = "book-container";
-
-  pages.forEach((text, index) => {
-    let page = document.createElement("div");
-    page.className = "book-page";
-    if(index===0) page.classList.add("active");
-    page.innerHTML = text;
-    container.appendChild(page);
-  });
-
-  let controls = document.createElement("div");
-  controls.className = "book-controls";
-  let prev = document.createElement("button"); prev.innerText = "⬅"; 
-  let next = document.createElement("button"); next.innerText = "➡";
-  controls.appendChild(prev); controls.appendChild(next);
-  container.appendChild(controls);
-
-  let current = 0;
-  const pagesDivs = container.querySelectorAll(".book-page");
-
-  function showPage(newIndex) {
-    pagesDivs[current].classList.remove("active");
-    if(newIndex>current) pagesDivs[current].classList.add("next");
-    current = newIndex;
-    pagesDivs[current].classList.add("active");
-  }
-
-  prev.onclick = () => { if(current>0) showPage(current-1); }
-  next.onclick = () => { if(current<pagesDivs.length-1) showPage(current+1); }
-
-  return container;
-}
-
-/* ===== OPEN GIFTS WITH BOOK PAGES ===== */
-function openGift(type) {
-  let content = [];
-  if(type==="music") {
-    content = [
-      `<h2>Our Song 🎵</h2>
-       <iframe width="100%" height="215" src="https://www.youtube.com/embed/dn5rSbHGsHY" frameborder="0" allowfullscreen></iframe>`
-    ];
-  }
-  if(type==="memories") {
-    content = [
-      `<img src="https://raw.githubusercontent.com/Crisp482/birthday-world/a09022390802d42b9eb348b917210a02f3c3c0bd/1.jpeg" width="100%"><p>The first time you came by me, I was overjoyed you came, gave me hella butterflies.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" width="100%"><p>One of my favorite little moments, it is so adorableeeee.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" width="100%"><p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true" width="100%"><p>I loved this night with you.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true" width="100%"><p>Our late night talks really are what i cherish most about us.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true" width="100%"><p>Your tendency to piss me off never grow old and i love it.</p>`,
-      `<img src="https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true" width="100%"><p>Outing number 2, def needed more pictures...initmate ones i mean hehehe.</p>`
-    ];
-  }
-  if(type==="letter") {
-    content = [
-      `<p>Happy Birthday, my love. I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me.</p>
-       <p>I wanted to give you something, even though it isn't as much as you have given me. I wanted to give you a place where you could slow down for a moment and feel what I feel every time I think about you.</p>`,
-      `<p>Seven months isn’t long by the calendar, but it’s been long enough for you to become my favorite person to talk to, my comfort on hard days and my happiness on the good ones.</p>
-       <p>Happy Birthday, my favorite player, my safe place, my person. Always yours, <strong>The love of your life, your woman, your man, your baby</strong> 💚🎮</p>`
-    ];
-  }
-
-  const popup = document.getElementById("popup");
-  const popupContent = document.getElementById("popupContent");
-  popupContent.innerHTML = "";
-  popupContent.appendChild(createBook(content));
-  popupContent.innerHTML += '<br><button onclick="closeGift()">Close</button>';
-  popup.style.display = "block";
-}
-
-function closeGift() {
-  document.getElementById("popup").style.display = "none";
 }
 </script>
+
 </body>
 </html>
