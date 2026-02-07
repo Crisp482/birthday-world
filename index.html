@@ -5,38 +5,23 @@
 <title>Our World 💚</title>
 
 <style>
-/* ===== GLOBAL ===== */
 body {
   margin: 0;
-  font-family: 'Trebuchet MS', sans-serif;
-  background: url("https://i.imgur.com/2R9GQ6n.png");
-  background-size: cover;
-  color: #fff;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(#7ec850, #b3e5fc);
   text-align: center;
   overflow-x: hidden;
 }
 
-/* ===== ROBLOX MENU ===== */
-.menu {
-  background: #111;
-  padding: 12px;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  font-weight: bold;
-}
-.menu span {
-  cursor: pointer;
-  color: #00ff88;
-}
-
-/* ===== HEADERS ===== */
 h1 {
   margin-top: 30px;
   font-size: 2.5em;
 }
 
-/* ===== WORLD ===== */
+p {
+  font-size: 1.1em;
+}
+
 .world {
   display: flex;
   justify-content: center;
@@ -48,119 +33,77 @@ h1 {
 .item {
   width: 160px;
   height: 160px;
-  background: url("https://i.imgur.com/Qk7R9YF.png");
-  background-size: cover;
-  border: 6px solid #3e2723;
+  background: repeating-linear-gradient(
+    45deg,
+    #7cb342,
+    #7cb342 10px,
+    #689f38 10px,
+    #689f38 20px
+  );
+  border: 6px solid #4e342e;
   border-radius: 12px;
   cursor: pointer;
-  font-size: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: float 3s ease-in-out infinite;
-}
-.item:hover {
-  transform: scale(1.15);
+  font-size: 60px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* ===== POPUP ===== */
+.item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
 .popup {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.75);
+  color: white;
   z-index: 10;
 }
+
 .popup-content {
-  background: #1c1c1c;
-  margin: 5% auto;
-  padding: 25px;
+  background: #1e1e1e;
+  margin: 8% auto;
+  padding: 30px;
   width: 90%;
-  max-width: 520px;
+  max-width: 420px;
   border-radius: 16px;
-  max-height: 80vh;
-  overflow-y: auto;
 }
 
-/* ===== BOOK ===== */
-.book {
-  background: #2b2b2b;
-  padding: 20px;
+.popup img {
+  width: 100%;
   border-radius: 12px;
-  text-align: left;
-  line-height: 1.5;
-}
-.page-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
-/* ===== TYPEWRITER ===== */
-.typewriter span {
-  border-right: 2px solid #00ff88;
-  animation: blink 1s infinite;
-}
-
-/* ===== HEARTS ===== */
-.heart {
-  position: fixed;
-  bottom: 0;
-  font-size: 20px;
-  animation: rise 5s linear infinite;
-  color: pink;
-}
-
-/* ===== ACHIEVEMENT ===== */
-.achievement {
-  background: #0f5132;
-  padding: 20px;
-  border-radius: 12px;
-  margin-top: 20px;
-  text-align: center;
-  animation: pop 1s ease;
-}
-
-/* ===== BUTTONS ===== */
 button {
-  padding: 10px 20px;
+  padding: 10px 18px;
   border: none;
   border-radius: 8px;
-  background: #00c853;
+  background: #4caf50;
   color: white;
+  font-size: 1em;
   cursor: pointer;
 }
-button:hover { background: #1aff75; }
 
-/* ===== ANIMATIONS ===== */
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+button:hover {
+  background: #66bb6a;
 }
-@keyframes rise {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100vh); opacity: 0; }
-}
-@keyframes blink {
-  50% { opacity: 0; }
-}
-@keyframes pop {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+
+.footer {
+  margin: 40px 0;
+  font-size: 0.9em;
+  opacity: 0.8;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ROBLOX MENU -->
-<div class="menu">
-  <span>🏠 Home</span>
-  <span>🎮 Our World</span>
-  <span>❤️ Us</span>
-</div>
-
-<h1>Welcome to Our World 💚</h1>
+<h1>Welcome to Our World 🎮💚</h1>
 <p>Explore carefully. Every block holds a memory.</p>
 
 <div class="world">
@@ -173,150 +116,110 @@ button:hover { background: #1aff75; }
   <div class="popup-content" id="popupContent"></div>
 </div>
 
-<!-- Minecraft Sounds -->
-<audio id="clickSound" src="https://www.myinstants.com/media/sounds/minecraft-click.mp3"></audio>
-<audio id="pageSound" src="https://www.myinstants.com/media/sounds/page-flip.mp3"></audio>
+<div class="footer">
+  Achievement Unlocked: Best Boyfriend Ever 🏆
+</div>
+
+<!-- BACKGROUND MUSIC (OPTIONAL) -->
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* ===== FLOATING HEARTS ===== */
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 5000);
-}, 900);
-
-/* ===== TYPEWRITER ===== */
-function typeWriter(text, element, speed = 22) {
-  let i = 0;
-  element.innerHTML = "";
-  const span = document.createElement("span");
-  element.appendChild(span);
-
-  function typing() {
-    if (i < text.length) {
-      span.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typing, speed);
-    }
-  }
-  typing();
-}
-
-/* ===== LETTER PAGES ===== */
-const letterPages = [
-`Happy Birthday, my love.
-
-I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me.`,
-
-`Seven months isn’t long, but it’s been long enough for you to become my favorite person, my comfort, and my happiness.`,
-
-`I love the little moments we share — the laughs, the talks, the quiet times. Those are the memories I hold closest.`,
-
-`This world is still building, just like us. And I wouldn’t want to build it with anyone else.`,
-
-`Happy Birthday, my favorite player, my safe place, my person.
-
-Always yours,
-Your babyyyyyy 💚🎮`
-];
-
-let currentPage = 0;
-
-/* ===== OPEN GIFTS ===== */
 function openGift(type) {
-  document.getElementById("clickSound").play();
   let content = "";
 
   if (type === "music") {
     content = `
       <h2>Our Song 🎵</h2>
-      <p>Freaky like us 😌</p>
+      <p>This song feels like us.</p>
       <iframe width="100%" height="215"
-        src="https://www.youtube.com/embed/dn5rSbHGsHY"
+        src="https://www.youtube.com/embed/<iframe width="560" height="315" src="https://www.youtube.com/embed/dn5rSbHGsHY?si=Mzs3u8Yvy6wTN7hg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
         frameborder="0" allowfullscreen></iframe>
-      <button onclick="closeGift()">Close</button>
     `;
-    document.getElementById("popupContent").innerHTML = content;
-    document.getElementById("popup").style.display = "block";
   }
 
   if (type === "memories") {
     content = `
       <h2>Our Memories 📸</h2>
-      <img src="https://raw.githubusercontent.com/Crisp482/birthday-world/main/1.jpeg" width="100%">
-      <p>The first time you came by me… butterflies everywhere.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" width="100%">
-      <p>One of my favorite little moments, it is so adorableeeee.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" width="100%">
-      <p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p>
-      <button onclick="closeGift()">Close</button>
+      <img src="https://raw.githubusercontent.com/Crisp482/birthday-world/a09022390802d42b9eb348b917210a02f3c3c0bd/1.jpeg" alt="Memory 1"> 
+      <p>The first time you came by me, I was overjoyed you came, gave me hella butterflies.</p> 
+      
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" alt="Memory 2"> 
+      <p>One of my favorite little moments, it is so adorableeeee.</p> 
+      
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" alt="Memory 3"> 
+      <p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p> 
+      
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true" alt="Memory 4"> 
+      <p>I loved this night with you.</p>
+
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true" alt="Memory 5"> 
+      <p>Our late night talks really are what i cherish most about us.</p> 
+      
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true" alt="Memory 6"> 
+      <p>Your tendency to piss me off never grow old and i love it.</p> 
+      
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true" alt="Memory 7"> 
+      <p>Outing number 2, def needed more pictures...initmate ones i mean hehehe.</p>
     `;
-    document.getElementById("popupContent").innerHTML = content;
-    document.getElementById("popup").style.display = "block";
   }
 
   if (type === "letter") {
     content = `
       <h2>For You 💚</h2>
-      <div class="book">
-        <div id="letterText" class="typewriter"></div>
-        <div class="page-controls">
-          <button id="prevBtn">⬅</button>
-          <button id="nextBtn">➡</button>
-        </div>
-      </div>
-      <div id="achievement"></div>
-      <button onclick="closeGift()">Close</button>
+    <p>Happy Birthday, my love.</p>
+
+    <p>
+    I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me. But here we are. And honestly, it felt right, because loving you feels right.
+    </p>
+
+    <p>
+    I wanted to give you something, even though it isn't as much as you have given me, i hope you liked it. I wanted to give you a place where you could slow down for a moment and feel what I feel every time I think about you. Every block, every click, every detail here was made with you in mind, because you’ve become such an important part of my life in such a short amount of time.
+    </p>
+
+    <p>
+    Seven months isn’t long by the calendar, but it’s been long enough for you to become my favorite person to talk to, my comfort on hard days and my happiness on the good ones. You’ve brought a kind of peace into my life that I didn’t even realize I was missing. Being with you feels easy, natural, and safe, like I can just be myself without fear.
+    </p>
+
+    <p>
+    I love the way you make me laugh, the way you think, the way you care, even when you don’t notice that you’re doing it. I love the little moments we share, the conversations, the jokes, the quiet times, the memories we’re still creating. Those are the moments that stay with me the most.
+    </p>
+
+    <p>
+    This world you’re exploring is really just a reflection of how I see us. Still building. Still learning. Still discovering new things. And I love that. I love that we’re growing together, one moment at a time, without rushing, just choosing each other every day.
+    </p>
+
+    <p>
+    I’m so proud of you, not just today, but always. Of who you are, of how far you’ve come, and of the person you’re becoming. You inspire me more than you know, and I feel lucky to be by your side, even this early on in our story.
+    </p>
+
+    <p>
+    So on your birthday, I just want you to remember this: you are loved deeply, genuinely, and intentionally. And no matter where life takes us or how difficult the level gets, I’m grateful that I get to be on this journey with you.
+    </p>
+
+    <p>
+    Happy Birthday, my favorite player, my safe place, my person.
+    </p>
+
+    <p>
+    I love you, more than I can put into words, but I hope this world helps you feel it.
+    </p>
+
+    <p>
+    Always yours,<br>
+    <strong>The love of your life, your woman, your man, your baby</strong> 💚🎮
+    </p>
     `;
-    document.getElementById("popupContent").innerHTML = content;
-    document.getElementById("popup").style.display = "block";
-
-    // attach events dynamically
-    document.getElementById("prevBtn").addEventListener("click", prevPage);
-    document.getElementById("nextBtn").addEventListener("click", nextPage);
-
-    showPage();
   }
-}
 
-/* ===== PAGE CONTROLS ===== */
-function showPage() {
-  document.getElementById("pageSound").play();
-  typeWriter(letterPages[currentPage], document.getElementById("letterText"));
-
-  // Show achievement on last page
-  if (currentPage === letterPages.length - 1) {
-    document.getElementById("achievement").innerHTML = `
-      <div class="achievement">
-        🏆 Achievement Unlocked<br>
-        <strong>Loved Beyond Measure</strong>
-      </div>`;
-  } else {
-    document.getElementById("achievement").innerHTML = "";
-  }
-}
-
-function nextPage() {
-  if (currentPage < letterPages.length - 1) {
-    currentPage++;
-    showPage();
-  }
-}
-
-function prevPage() {
-  if (currentPage > 0) {
-    currentPage--;
-    showPage();
-  }
+  content += `<br><button onclick="closeGift()">Close</button>`;
+  document.getElementById("popupContent").innerHTML = content;
+  document.getElementById("popup").style.display = "block";
 }
 
 function closeGift() {
   document.getElementById("popup").style.display = "none";
-  currentPage = 0;
-  document.getElementById("achievement").innerHTML = "";
 }
 </script>
 
