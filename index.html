@@ -82,24 +82,90 @@
 <div id="mainWorld">
   <h1>Welcome to Our World 🎮💚</h1>
   <p>Explore carefully. Every block holds a memory.</p>
-  <!-- Gifts and other content will come here later -->
+
+  <div class="world">
+    <div class="item" onclick="openGift('music')">🎧</div>
+    <div class="item" onclick="openGift('memories')">📸</div>
+    <div class="item" onclick="openGift('letter')">💌</div>
+  </div>
 </div>
 
+<!-- POPUP OVERLAY -->
+<div class="popup" id="popup">
+  <div class="popup-content" id="popupContent"></div>
+</div>
+
+<style>
+.world {
+  display: flex;
+  justify-content: center;
+  gap: 5vw;
+  flex-wrap: wrap;
+  margin-top: 5vh;
+}
+
+.item {
+  width: 30vw;
+  max-width: 160px;
+  height: 30vw;
+  max-height: 160px;
+  background: repeating-linear-gradient(
+    45deg,
+    #7cb342,
+    #7cb342 10px,
+    #689f38 10px,
+    #689f38 20px
+  );
+  border: 6px solid #4e342e;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10vw;
+  max-font-size: 60px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  z-index: 10;
+}
+
+.popup-content {
+  background: #1e1e1e;
+  margin: 8% auto;
+  padding: 5vw;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+</style>
+
 <script>
-const correctCode = "0727";
+// OPEN POPUP FUNCTION (base, content will come later)
+function openGift(type) {
+  let content = `<h2>${type.toUpperCase()}</h2><p>Content coming soon...</p><button onclick="closeGift()">Close</button>`;
+  document.getElementById("popupContent").innerHTML = content;
+  document.getElementById("popup").style.display = "block";
+}
 
-function checkPasscode() {
-  const input = document.getElementById("passcodeInput").value;
-  const error = document.getElementById("errorMessage");
-
-  if (input === correctCode) {
-    // Correct passcode: hide passcode screen, show main world
-    document.getElementById("passcodeScreen").style.display = "none";
-    document.getElementById("mainWorld").style.display = "block";
-  } else {
-    // Wrong passcode: show error
-    error.textContent = "Incorrect passcode. Try again!";
-  }
+// CLOSE POPUP
+function closeGift() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
 }
 </script>
 
