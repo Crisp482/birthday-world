@@ -239,6 +239,8 @@ function openGift(type) {
         frameborder="0" allowfullscreen></iframe>
       <button onclick="closeGift()">Close</button>
     `;
+    document.getElementById("popupContent").innerHTML = content;
+    document.getElementById("popup").style.display = "block";
   }
 
   if (type === "memories") {
@@ -246,20 +248,14 @@ function openGift(type) {
       <h2>Our Memories 📸</h2>
       <img src="https://raw.githubusercontent.com/Crisp482/birthday-world/main/1.jpeg" width="100%">
       <p>The first time you came by me… butterflies everywhere.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" alt="Memory 2">
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" width="100%">
       <p>One of my favorite little moments, it is so adorableeeee.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" alt="Memory 3">
+      <img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" width="100%">
       <p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true" alt="Memory 4">
-      <p>I loved this night with you.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true" alt="Memory 5">
-      <p>Our late night talks really are what i cherish most about us.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true" alt="Memory 6">
-      <p>Your tendency to piss me off never grow old and i love it.</p>
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true" alt="Memory 7">
-      <p>Outing number 2, def needed more pictures...initmate ones i mean hehehe.</p>
       <button onclick="closeGift()">Close</button>
     `;
+    document.getElementById("popupContent").innerHTML = content;
+    document.getElementById("popup").style.display = "block";
   }
 
   if (type === "letter") {
@@ -268,19 +264,22 @@ function openGift(type) {
       <div class="book">
         <div id="letterText" class="typewriter"></div>
         <div class="page-controls">
-          <button onclick="prevPage()">⬅</button>
-          <button onclick="nextPage()">➡</button>
+          <button id="prevBtn">⬅</button>
+          <button id="nextBtn">➡</button>
         </div>
       </div>
       <div id="achievement"></div>
       <button onclick="closeGift()">Close</button>
     `;
+    document.getElementById("popupContent").innerHTML = content;
+    document.getElementById("popup").style.display = "block";
+
+    // attach events dynamically
+    document.getElementById("prevBtn").addEventListener("click", prevPage);
+    document.getElementById("nextBtn").addEventListener("click", nextPage);
+
+    showPage();
   }
-
-  document.getElementById("popupContent").innerHTML = content;
-  document.getElementById("popup").style.display = "block";
-
-  if (type === "letter") showPage();
 }
 
 /* ===== PAGE CONTROLS ===== */
@@ -288,12 +287,15 @@ function showPage() {
   document.getElementById("pageSound").play();
   typeWriter(letterPages[currentPage], document.getElementById("letterText"));
 
+  // Show achievement on last page
   if (currentPage === letterPages.length - 1) {
     document.getElementById("achievement").innerHTML = `
       <div class="achievement">
         🏆 Achievement Unlocked<br>
         <strong>Loved Beyond Measure</strong>
       </div>`;
+  } else {
+    document.getElementById("achievement").innerHTML = "";
   }
 }
 
@@ -314,6 +316,7 @@ function prevPage() {
 function closeGift() {
   document.getElementById("popup").style.display = "none";
   currentPage = 0;
+  document.getElementById("achievement").innerHTML = "";
 }
 </script>
 
