@@ -1,227 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Our World 💚</title>
-
 <style>
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(#7ec850, #b3e5fc);
-  text-align: center;
-  overflow-x: hidden;
-}
-
-h1 {
-  margin-top: 30px;
-  font-size: 2.5em;
-}
-
-p {
-  font-size: 1.1em;
-}
-
-.world {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin: 80px 20px;
-  flex-wrap: wrap;
-}
-
-.item {
-  width: 160px;
-  height: 160px;
-  background: repeating-linear-gradient(
-    45deg,
-    #7cb342,
-    #7cb342 10px,
-    #689f38 10px,
-    #689f38 20px
-  );
-  border: 6px solid #4e342e;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 60px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.item:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-.popup {
+/* ===== PAGE FLIP ANIMATION ===== */
+.book-page {
   display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  color: white;
-  z-index: 10;
-}
-
-.popup-content {
-  background: #1e1e1e;
-  margin: 8% auto;
-  padding: 30px;
-  width: 90%;
-  max-width: 420px;
-  border-radius: 16px;
-}
-
-.popup img {
-  width: 100%;
+  background: #2b2b2b;
   border-radius: 12px;
-  margin-bottom: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
+  line-height: 1.5;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  opacity: 0;
 }
-
-button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
+.book-page.active {
+  display: block;
+  opacity: 1;
+  transform: rotateY(0deg);
+}
+.book-page.next {
+  transform: rotateY(-180deg);
+}
+.book-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.book-controls button {
   background: #4caf50;
-  color: white;
-  font-size: 1em;
+  color: #fff;
+  padding: 8px 16px;
   cursor: pointer;
-}
-
-button:hover {
-  background: #66bb6a;
-}
-
-.footer {
-  margin: 40px 0;
-  font-size: 0.9em;
-  opacity: 0.8;
+  border-radius: 8px;
 }
 </style>
-</head>
 
-<body>
-
-<h1>Welcome to Our World 🎮💚</h1>
-<p>Explore carefully. Every block holds a memory.</p>
-
-<div class="world">
-  <div class="item" onclick="openGift('music')">🎧</div>
-  <div class="item" onclick="openGift('memories')">📸</div>
-  <div class="item" onclick="openGift('letter')">💌</div>
+<!-- ===== PASSCODE SCREEN ===== -->
+<div id="passcodeScreen" style="position:fixed; inset:0; background:#111; color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:1000;">
+  <h2>Enter the passcode to unlock your world</h2>
+  <input id="passcodeInput" type="text" placeholder="Hint: First kiss" style="padding:10px; font-size:1.2em; margin:10px;">
+  <button onclick="checkPasscode()">Unlock</button>
+  <p id="passcodeMessage" style="color:red;"></p>
 </div>
-
-<div class="popup" id="popup">
-  <div class="popup-content" id="popupContent"></div>
-</div>
-
-<div class="footer">
-  Achievement Unlocked: Best Boyfriend Ever 🏆
-</div>
-
-<!-- BACKGROUND MUSIC (OPTIONAL) -->
-<audio autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
 
 <script>
-function openGift(type) {
+// ===== FLOATING HEARTS =====
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 800);
+
+// ===== PASSCODE FEATURE =====
+function checkPasscode() {
+  const code = document.getElementById("passcodeInput").value;
+  if(code === "0727") {
+    document.getElementById("passcodeScreen").style.display = "none";
+  } else {
+    document.getElementById("passcodeMessage").innerText = "Incorrect passcode!";
+  }
+}
+
+// ===== CREATE BOOK FUNCTION WITH FLIP =====
+function createBook(pages) {
+  let container = document.createElement("div");
+  container.className = "book-container";
+
+  pages.forEach((text, index) => {
+    let page = document.createElement("div");
+    page.className = "book-page";
+    if(index===0) page.classList.add("active");
+    page.innerHTML = text;
+    container.appendChild(page);
+  });
+
+  let controls = document.createElement("div");
+  controls.className = "book-controls";
+  let prev = document.createElement("button"); prev.innerText = "⬅"; 
+  let next = document.createElement("button"); next.innerText = "➡";
+  controls.appendChild(prev); controls.appendChild(next);
+  container.appendChild(controls);
+
+  let current = 0;
+  const pagesDivs = container.querySelectorAll(".book-page");
+
+  function showPage(newIndex) {
+    pagesDivs[current].classList.remove("active");
+    if(newIndex>current) pagesDivs[current].classList.add("next");
+    current = newIndex;
+    pagesDivs[current].classList.add("active");
+  }
+
+  prev.onclick = () => { if(current>0) showPage(current-1); }
+  next.onclick = () => { if(current<pagesDivs.length-1) showPage(current+1); }
+
+  return container;
+}
+
+// ===== MODIFY openGift FUNCTION TO USE BOOK PAGES =====
+const originalOpenGift = openGift;
+openGift = function(type) {
   let content = "";
-
-  if (type === "music") {
-    content = `
-      <h2>Our Song 🎵</h2>
-      <p>This song feels like us.</p>
-      <iframe width="100%" height="215"
-        src="https://www.youtube.com/embed/<iframe width="560" height="315" src="https://www.youtube.com/embed/dn5rSbHGsHY?si=Mzs3u8Yvy6wTN7hg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
-        frameborder="0" allowfullscreen></iframe>
-    `;
+  if(type==="music") {
+    content = [
+      `<h2>Our Song 🎵</h2>
+       <iframe width="100%" height="215" src="https://www.youtube.com/embed/dn5rSbHGsHY" frameborder="0" allowfullscreen></iframe>`
+    ];
+  }
+  if(type==="memories") {
+    content = [
+      `<img src="https://raw.githubusercontent.com/Crisp482/birthday-world/a09022390802d42b9eb348b917210a02f3c3c0bd/1.jpeg" width="100%"><p>The first time you came by me, I was overjoyed you came, gave me hella butterflies.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" width="100%"><p>One of my favorite little moments, it is so adorableeeee.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" width="100%"><p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true" width="100%"><p>I loved this night with you.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true" width="100%"><p>Our late night talks really are what i cherish most about us.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true" width="100%"><p>Your tendency to piss me off never grow old and i love it.</p>`,
+      `<img src="https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true" width="100%"><p>Outing number 2, def needed more pictures...initmate ones i mean hehehe.</p>`
+    ];
+  }
+  if(type==="letter") {
+    content = [
+      `<p>Happy Birthday, my love. I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me.</p>
+       <p>I wanted to give you something, even though it isn't as much as you have given me. I wanted to give you a place where you could slow down for a moment and feel what I feel every time I think about you.</p>`,
+      `<p>Seven months isn’t long by the calendar, but it’s been long enough for you to become my favorite person to talk to, my comfort on hard days and my happiness on the good ones.</p>
+       <p>Happy Birthday, my favorite player, my safe place, my person. Always yours, <strong>The love of your life, your woman, your man, your baby</strong> 💚🎮</p>`
+    ];
   }
 
-  if (type === "memories") {
-    content = `
-      <h2>Our Memories 📸</h2>
-      <img src="https://raw.githubusercontent.com/Crisp482/birthday-world/a09022390802d42b9eb348b917210a02f3c3c0bd/1.jpeg" alt="Memory 1"> 
-      <p>The first time you came by me, I was overjoyed you came, gave me hella butterflies.</p> 
-      
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/2.jpeg?raw=true" alt="Memory 2"> 
-      <p>One of my favorite little moments, it is so adorableeeee.</p> 
-      
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/3.jpeg?raw=true" alt="Memory 3"> 
-      <p>I can not get over your smile, the way your eyes just disappear and the chubby cheeksss eeee.</p> 
-      
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/4.jpeg?raw=true" alt="Memory 4"> 
-      <p>I loved this night with you.</p>
-
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/5.jpeg?raw=true" alt="Memory 5"> 
-      <p>Our late night talks really are what i cherish most about us.</p> 
-      
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/6.jpeg?raw=true" alt="Memory 6"> 
-      <p>Your tendency to piss me off never grow old and i love it.</p> 
-      
-      <img src="https://github.com/Crisp482/birthday-world/blob/main/7.jpeg?raw=true" alt="Memory 7"> 
-      <p>Outing number 2, def needed more pictures...initmate ones i mean hehehe.</p>
-    `;
-  }
-
-  if (type === "letter") {
-    content = `
-      <h2>For You 💚</h2>
-    <p>Happy Birthday, my love.</p>
-
-    <p>
-    I don’t even know where to start, because seven months ago I never imagined I’d be building a whole little world just to say how much someone means to me. But here we are. And honestly, it felt right, because loving you feels right.
-    </p>
-
-    <p>
-    I wanted to give you something, even though it isn't as much as you have given me, i hope you liked it. I wanted to give you a place where you could slow down for a moment and feel what I feel every time I think about you. Every block, every click, every detail here was made with you in mind, because you’ve become such an important part of my life in such a short amount of time.
-    </p>
-
-    <p>
-    Seven months isn’t long by the calendar, but it’s been long enough for you to become my favorite person to talk to, my comfort on hard days and my happiness on the good ones. You’ve brought a kind of peace into my life that I didn’t even realize I was missing. Being with you feels easy, natural, and safe, like I can just be myself without fear.
-    </p>
-
-    <p>
-    I love the way you make me laugh, the way you think, the way you care, even when you don’t notice that you’re doing it. I love the little moments we share, the conversations, the jokes, the quiet times, the memories we’re still creating. Those are the moments that stay with me the most.
-    </p>
-
-    <p>
-    This world you’re exploring is really just a reflection of how I see us. Still building. Still learning. Still discovering new things. And I love that. I love that we’re growing together, one moment at a time, without rushing, just choosing each other every day.
-    </p>
-
-    <p>
-    I’m so proud of you, not just today, but always. Of who you are, of how far you’ve come, and of the person you’re becoming. You inspire me more than you know, and I feel lucky to be by your side, even this early on in our story.
-    </p>
-
-    <p>
-    So on your birthday, I just want you to remember this: you are loved deeply, genuinely, and intentionally. And no matter where life takes us or how difficult the level gets, I’m grateful that I get to be on this journey with you.
-    </p>
-
-    <p>
-    Happy Birthday, my favorite player, my safe place, my person.
-    </p>
-
-    <p>
-    I love you, more than I can put into words, but I hope this world helps you feel it.
-    </p>
-
-    <p>
-    Always yours,<br>
-    <strong>The love of your life, your woman, your man, your baby</strong> 💚🎮
-    </p>
-    `;
-  }
-
-  content += `<br><button onclick="closeGift()">Close</button>`;
-  document.getElementById("popupContent").innerHTML = content;
-  document.getElementById("popup").style.display = "block";
-}
-
-function closeGift() {
-  document.getElementById("popup").style.display = "none";
-}
+  let popup = document.getElementById("popup");
+  let popupContent = document.getElementById("popupContent");
+  popupContent.innerHTML = "";
+  popupContent.appendChild(createBook(content));
+  popupContent.innerHTML += '<br><button onclick="closeGift()">Close</button>';
+  popup.style.display = "block";
+};
 </script>
-
-</body>
-</html>
