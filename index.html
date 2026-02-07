@@ -145,14 +145,14 @@ button:hover {
   border-radius: 8px;
 }
 
-/* ===== FADE-IN MAIN CONTENT ===== */
+/* FADE-IN MAIN CONTENT */
 #mainContent {
   display: none;
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
 #mainContent.visible {
-  display: block;
+  display: block; /* ADD THIS LINE */
   opacity: 1;
 }
 
@@ -231,7 +231,9 @@ function checkPasscode() {
   const code = document.getElementById("passcodeInput").value;
   if(code === "0727") {
     document.getElementById("passcodeScreen").style.display = "none";
-    document.getElementById("mainContent").classList.add("visible");
+    const main = document.getElementById("mainContent");
+    main.style.display = "block";  // ensure display is block
+    setTimeout(() => main.classList.add("visible"), 10); // trigger fade-in
   } else {
     document.getElementById("passcodeMessage").innerText = "Incorrect passcode!";
   }
